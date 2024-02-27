@@ -6,11 +6,6 @@ use utils::{create_func_call, get_code, make_bundled_file};
 use visitor::{get_acquire_info, Visitor};
 use std::time::Instant;
 
-// TODO: Cli implementation
-// TODO: Unit tests
-// TODO: Refactor and optimization, make code also more robust
-// TODO: For support for where acquire is used, i.e. string interpolation
-
 fn main() -> Result<()> {
 	let main_path = "F:\\Roblox\\bundler\\lua\\main.lua";
 	let main = include_str!("../lua/main.lua");
