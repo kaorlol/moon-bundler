@@ -15,13 +15,9 @@ fn main() -> Result<()> {
 
 	let start = Instant::now();
 
-	// let ast = full_moon::parse(&code)?;
-	// let stmts = ast.nodes().stmts().collect();
-
 	let indent = if args.use_root.unwrap_or(false) { "\n" } else { "" };
 	let cloned_input_file = args.input_file.clone();
 	let input_name = cloned_input_file.split('\\').last().unwrap();
-	// println!("Parsed the file in {:?}{indent}", start.elapsed());
 
 	let mut visitor = Visitor::default();
 	let bundled_code = match replace_acquires(&PathBuf::from(&args.input_file), &mut visitor)? {
@@ -43,7 +39,6 @@ fn replace_acquires(input_path: &PathBuf, mut visitor: &mut Visitor) -> anyhow::
 	let stmts = ast.nodes().stmts().collect();
 
 	let acquires = visitor.get_function_calls(&stmts);
-
 	if acquires.is_empty() {
 		Ok(Err(raw_code))
 	} else {
