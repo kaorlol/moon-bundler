@@ -1,9 +1,10 @@
 [package]
 name = "moon-bundler"
-version = "0.1.0-alpha"
+version = "0.1.0-beta"
 edition = "2021"
 
 [dependencies]
 anyhow = "1.0.80"
+clap = { version = "4.5.1", features = ["derive"] }
 full_moon = { version = "0.19.0", features = ["roblox"] }
 # tokio = { version = "1.36.0", features = ["full"] }
