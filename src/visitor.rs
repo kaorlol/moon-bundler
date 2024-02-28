@@ -7,7 +7,7 @@ use full_moon::{
 	tokenizer::{StringLiteralQuoteType, Symbol, TokenType},
 };
 
-#[derive(Default)]
+#[derive(Default, Clone, Copy)]
 pub struct Visitor;
 
 #[derive(Clone, Debug)]
