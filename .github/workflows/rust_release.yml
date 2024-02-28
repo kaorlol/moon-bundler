@@ -1,8 +1,8 @@
 name: Rust Release binary
 
 on:
-    release:
-        types: [created]
+    push:
+        branches: [main]
 
 jobs:
     release:
