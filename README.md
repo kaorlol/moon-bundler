@@ -29,7 +29,7 @@ moon-bundler <input> <output>
 ```
 
 ## Todo
-- [ ] Add CLI implementation
+- [x] Add CLI implementation
 - [ ] Add unit tests
 - [ ] Refactor, optimize code, and make it more robust
 - [ ] Add more support for where acquire is used, i.e. string interpolation
