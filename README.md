@@ -25,7 +25,7 @@ cargo build --release
 ## Usage
 
 ```sh
-moon-bundler <input> <output>
+moon-bundler -i <input> -o <output>
 ```
 
 ## Todo
