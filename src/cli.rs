@@ -11,7 +11,7 @@ pub struct Args {
 	#[clap(short, long)]
 	pub output: String,
 
-	#[clap(short, long, default_value_t = false)]
+	#[clap(short = 'r', long, default_value_t = false)]
 	pub use_root: bool,
 
 	#[clap(short, long, default_value_t = false)]

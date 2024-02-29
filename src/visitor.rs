@@ -16,6 +16,12 @@ pub struct Acquire {
 	pub parent_type: ParentType,
 }
 
+impl Acquire {
+	pub fn from(function_call: ast::FunctionCall, parent_type: ParentType) -> Self {
+		Self { function_call, parent_type }
+	}
+}
+
 #[derive(Debug, PartialEq, Clone)]
 pub enum ParentType {
 	Assignment,
@@ -26,6 +32,11 @@ impl PartialEq<ParentType> for &ParentType {
 	fn eq(&self, other: &ParentType) -> bool {
 		**self == *other
 	}
+}
+
+pub enum Assignments<'a> {
+	Assignment(&'a ast::Assignment),
+	LocalAssignment(&'a ast::LocalAssignment),
 }
 
 impl Visitor {
@@ -45,7 +56,7 @@ impl Visitor {
 				}
 				_ => None,
 			})
-			.unwrap()
+			.expect("Could not get string literal")
 	}
 
 	pub fn has_parentheses(&mut self, tokens: Tokens<'_>) -> bool {
@@ -62,14 +73,10 @@ impl Visitor {
 			.len() == 2
 	}
 
-	fn process_assignment(
-		&mut self,
-		assignment: Option<&ast::Assignment>,
-		local_assignment: Option<&ast::LocalAssignment>,
-	) -> Vec<Acquire> {
+	fn process_assignment(&mut self, assignment: &Assignments) -> Vec<Acquire> {
 		let expressions = match assignment {
-			Some(assignment) => assignment.expressions(),
-			None => local_assignment.unwrap().expressions(),
+			Assignments::Assignment(assignment) => assignment.expressions(),
+			Assignments::LocalAssignment(local_assignment) => local_assignment.expressions(),
 		};
 
 		expressions
@@ -78,7 +85,7 @@ impl Visitor {
 				if let Expression::FunctionCall(call) = expr {
 					let tokens = call.prefix().tokens();
 					if self.has_acquire(tokens) {
-						return Some(Acquire { function_call: call.clone(), parent_type: ParentType::Assignment });
+						return Some(Acquire::from(call.clone(), ParentType::Assignment));
 					}
 				}
 				None
@@ -91,21 +98,18 @@ impl Visitor {
 			.iter()
 			.filter_map(|stmt| match stmt {
 				LocalAssignment(local_assignment) => {
-					let function_calls = self.process_assignment(None, Some(local_assignment));
+					let function_calls = self.process_assignment(&Assignments::LocalAssignment(&local_assignment));
 					Some(function_calls)
 				}
 				Assignment(assignment) => {
-					let function_calls = self.process_assignment(Some(assignment), None);
+					let function_calls = self.process_assignment(&Assignments::Assignment(&assignment));
 					Some(function_calls)
 				}
 				FunctionCall(function_call) => {
 					let tokens = function_call.prefix().tokens();
 					if self.has_acquire(tokens) {
-						let function_call = function_call.clone();
-						let parent_type = ParentType::Stmt;
-						return Some(vec![Acquire { function_call, parent_type }]);
+						return Some(vec![Acquire::from(function_call.clone(), ParentType::Stmt)]);
 					}
-
 					None
 				}
 				_ => None,

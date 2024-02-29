@@ -34,7 +34,7 @@ moon-bundler -i <input> -o <output>
 - [ ] Add unit tests
 - [ ] Refactor, optimize code, and make it more robust
 - [ ] Add more support for where acquire is used, i.e. string interpolation
-- [ ] Add root file support/option in CLI
+- [x] Add root file support/option in CLI
 
 ## License
 
