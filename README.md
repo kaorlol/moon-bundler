@@ -17,7 +17,7 @@ if you wanna build the executable yourself, you can do the following:
 ##### Building
 
 ```sh
-git clone
+git clone https://github.com/kaorlol/moon-bundler.git
 cd moon-bundler
 cargo build --release
 ```
