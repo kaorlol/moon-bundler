@@ -15,7 +15,7 @@ pub fn beautify_code(file: &PathBuf) {
 	let verify_output = stylua_lib::OutputVerification::Full;
 	let formatted_code = format_code(&code, default_config, None, verify_output).unwrap();
 
-	println!("Took {:?} to format bundled.lua", start.elapsed());
+	println!("Took {:?} to beautify bundled.lua", start.elapsed());
 	write(file, formatted_code).unwrap();
 }
 
